@@ -2,8 +2,8 @@
 #include "circle.hpp"
 #include <iostream>
 
-circle::circle( sf::Vector2f position, float size ):
-	drawable(position, sf::Color(0, 255, 0), 2 * size, 2 * size),
+circle::circle( sf::Vector2f position, float size , sf::Color color):
+	drawable(position, color),
 	size(size)
 {}
 

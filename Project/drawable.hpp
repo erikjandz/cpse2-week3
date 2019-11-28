@@ -5,26 +5,16 @@
 
 class drawable{
 public:
-  drawable(	sf::Vector2f position, sf::Color color, float sizex, float sizey):
+  drawable(	sf::Vector2f position, sf::Color color):
     position{ position },
     color{color}
-    {
-      hitbox = sf::Rect<float>{position, sf::Vector2f{sizex, sizey}};
-    }
+    {}
   virtual void draw( sf::RenderWindow & window ) const = 0;
 
   virtual void interact( drawable * other){}
 
-  void move( sf::Vector2f delta ){
-  	position += delta;
-    hitbox.left += delta.x;
-    hitbox.top += delta.y;
-  }
-
   void jump( sf::Vector2f target ){
   	position = target;
-    hitbox.left = target.x;
-    hitbox.top = target.y;
   }
 
   void jump( sf::Vector2i target ){
@@ -33,14 +23,16 @@ public:
   		static_cast< float >( target.y )
   	));
   }
+	
+  virtual bool selected(sf::Vector2i mouseLocation) { return true; };
 
-  virtual void update_position(){};
+  bool Selected = false;
 
-  virtual void interact(){};
+  virtual std::string getType() { return "DRAWABLE"; };
 
-  sf::Rect<float> hitbox;
+  sf::Vector2f position;
 protected:
-	sf::Vector2f position;
-  sf::Color color;
+	sf::Color color;
+
 };
 #endif

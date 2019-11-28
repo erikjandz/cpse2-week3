@@ -9,7 +9,7 @@ public:
    unknown_color( const std::string & name  ):
        s{ std::string{ "unknown color [" } + name + "]" }
    {}
-   const char * what() const override {
+   const char * what() const noexcept override {
       return s.c_str();
    }
 private:
@@ -21,7 +21,7 @@ public:
    unknown_shape( const std::string & name  ):
        s{ std::string{ "unknown shape [" } + name + "]" }
    {}
-   const char * what() const override {
+   const char * what() const noexcept override {
       return s.c_str();
    }
 private:
@@ -31,8 +31,8 @@ private:
 class end_of_file final : public std::exception {
 public:
 
-   const std::string what() const override {
-      return s;
+   const char * what() const noexcept override {
+      return s.c_str();
    }
 private:
    std::string s = "end of file";
@@ -40,11 +40,11 @@ private:
 
 class invalid_position final : public std::exception {
 public:
-   invalid_position( const std::string & name  ):
+   invalid_position( const char & name  ):
        s{ std::string{ "invalid position [" } + name + "]" }
    {}
-   const std::string what() const override {
-      return s;
+   const const char * what() const noexcept override {
+      return s.c_str();
    }
 private:
    std::string s;

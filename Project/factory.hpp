@@ -10,6 +10,8 @@ std::ifstream & operator>>( std::ifstream & input, sf::Color & rhs ){
    const struct { const char * name; sf::Color color; } colors[]{
        { "yellow", sf::Color::Yellow },
        { "red",    sf::Color::Red },
+	   { "green",    sf::Color::Green },
+	   { "blue",    sf::Color::Blue },
    };
    for( auto const & color : colors ){
        if( color.name == s ){
@@ -40,17 +42,22 @@ std::ifstream & operator>>( std::ifstream & input, sf::Vector2f & rhs ){
 
 drawable * screen_object_read( std::ifstream & input ){
    sf::Vector2f position;
+   sf::Vector2f position2;
+   sf::Color color;
+   float size;
    std::string name;
    input >> position >> name;
 
    if( name == "CIRCLE" ){
-      return new circle(position);
+		input >> color >> size;
+		return new circle(position, size, color);
    } else if( name == "RECTANGLE" ){
-      return new rectangle(position);
+		input >> color >> position2;
+		return new rectangle(position, position2, color);
    } else if( name == "PICTURE" ){
-      return new rectangle(position);
+		throw end_of_file();
    } else if( name == "" ){
-      throw end_of_file();
+		throw end_of_file();
    }
    throw unknown_shape( name );
 }

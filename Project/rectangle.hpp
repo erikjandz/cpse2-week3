@@ -6,9 +6,15 @@
 
 class rectangle : public drawable{
 public:
-	rectangle( sf::Vector2f position, sf::Vector2f size = sf::Vector2f(30.0, 30.0), sf::Color color = sf::Color(255, 0, 0));
+	rectangle( sf::Vector2f position, sf::Vector2f size , sf::Color color );
 
 	void draw( sf::RenderWindow & window ) const override;
+
+	bool selected(sf::Vector2i mouseLocation)override{
+		return (position.x <= mouseLocation.x && mouseLocation.x <= (position.x + size.x)) && (position.y <= mouseLocation.y && mouseLocation.y <= (position.y + size.y));
+	}
+
+	std::string getType()override { return "RECTANGLE"; };
 private:
   sf::Vector2f size;
 };
