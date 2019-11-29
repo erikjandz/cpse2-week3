@@ -14,7 +14,12 @@ public:
 		return (position.x <= mouseLocation.x && mouseLocation.x <= (position.x + size.x)) && (position.y <= mouseLocation.y && mouseLocation.y <= (position.y + size.y));
 	}
 
-	std::string getType()override { return "RECTANGLE"; };
+	void writeType(std::ostream & output)override { output << "RECTANGLE "; };
+	void writeObjectSpecificStuff(std::ostream & output)override{ 
+		writeColor(output);
+		output << "(" << size.x << "," << size.y << ") "; 
+	};
+
 private:
   sf::Vector2f size;
 };

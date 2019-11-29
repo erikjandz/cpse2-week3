@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "circle.hpp"
 #include "rectangle.hpp"
+#include "line.hpp"
 #include <vector>
 #include <fstream>
 #include <string>
@@ -24,9 +25,10 @@ void select(std::vector<drawable*> drawables, sf::RenderWindow & window) {
 			}
 		}
 	}else {
-		for (auto* object : drawables) {
+		for (auto * object : drawables) {
 			if (object->Selected){
 				object->Selected = false;
+				return;
 			}
 		}
 	}
@@ -69,8 +71,12 @@ int main( int argc, char *argv[] ){
 	std::ofstream output("objects.txt");
 
 	for (auto * object : drawables) {
-		output << "(" << object->position.x << "," << object->position.y << ") " << object->getType() << "\n";
+		object->writePosition(output);
+		object->writeType(output);
+		object->writeObjectSpecificStuff(output);
+		output << "\n";
 	}
+	
 	std::cout << "Terminating application\n";
 	return 0;
 }

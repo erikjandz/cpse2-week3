@@ -4,14 +4,17 @@
 #include <fstream>
 #include "exception.hpp"
 
+
 std::ifstream & operator>>( std::ifstream & input, sf::Color & rhs ){
    std::string s;
    input >> s;
    const struct { const char * name; sf::Color color; } colors[]{
-       { "yellow", sf::Color::Yellow },
-       { "red",    sf::Color::Red },
-	   { "green",    sf::Color::Green },
-	   { "blue",    sf::Color::Blue },
+		{ "yellow", sf::Color::Yellow },
+		{ "red",    sf::Color::Red },
+		{ "green",    sf::Color::Green },
+		{ "blue",    sf::Color::Blue },
+		{ "black",    sf::Color::Black },
+		{ "white",    sf::Color::White },
    };
    for( auto const & color : colors ){
        if( color.name == s ){
@@ -46,6 +49,7 @@ drawable * screen_object_read( std::ifstream & input ){
    sf::Color color;
    float size;
    std::string name;
+   std::string filename;
    input >> position >> name;
 
    if( name == "CIRCLE" ){
@@ -55,7 +59,8 @@ drawable * screen_object_read( std::ifstream & input ){
 		input >> color >> position2;
 		return new rectangle(position, position2, color);
    } else if( name == "PICTURE" ){
-		throw end_of_file();
+		input >> filename;
+		return new picture(position, filename);
    } else if( name == "" ){
 		throw end_of_file();
    }
