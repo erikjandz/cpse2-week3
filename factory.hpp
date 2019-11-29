@@ -61,6 +61,9 @@ drawable * screen_object_read( std::ifstream & input ){
    } else if( name == "PICTURE" ){
 		input >> filename;
 		return new picture(position, filename);
+   } else if (name == "LINE") {
+	    input >> color >> position2;
+	    return new line(position, position2, color);
    } else if( name == "" ){
 		throw end_of_file();
    }
