@@ -55,8 +55,8 @@ std::unique_ptr<drawable>  screen_object_read( std::ifstream & input ){
 
    if( name == "CIRCLE" ){
 		input >> color >> size;
-		//return std::make_unique<circle>(position, size, color);
-   } /*else if( name == "RECTANGLE" ){
+		return std::make_unique<circle>(position, size, color);
+   } else if( name == "RECTANGLE" ){
 		input >> color >> position2;
 		return std::make_unique<rectangle>(position, position2, color);
    } else if( name == "PICTURE" ){
@@ -65,7 +65,7 @@ std::unique_ptr<drawable>  screen_object_read( std::ifstream & input ){
    } else if (name == "LINE") {
 	    input >> color >> position2;
 	    return std::make_unique<line>(position, position2, color);
-   } */ else if( name == "" ){
+   } else if( name == "" ){
 		throw end_of_file();
    }
    throw unknown_shape( name );

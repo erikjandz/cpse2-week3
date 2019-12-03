@@ -11,7 +11,7 @@
 #include "factory.hpp"
 
 
-void select(std::vector<std::unique_ptr<drawable>> drawables, sf::RenderWindow & window) {
+void select(std::vector<std::unique_ptr<drawable>> & drawables, sf::RenderWindow & window) {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 		for (auto & object : drawables) {
 			if (object->Selected) {
