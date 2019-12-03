@@ -11,21 +11,21 @@
 #include "factory.hpp"
 
 
-void select(std::vector<drawable*> drawables, sf::RenderWindow & window) {
+void select(std::vector<std::unique_ptr<drawable>> drawables, sf::RenderWindow & window) {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-		for (auto * object : drawables) {
+		for (auto & object : drawables) {
 			if (object->Selected) {
 				object->jump(sf::Mouse::getPosition(window));
 				return;
 			}
 		}
-		for (auto * object : drawables) {
+		for (auto & object : drawables) {
 			if (object->selected(sf::Mouse::getPosition(window))) {
 				object->Selected = true;
 			}
 		}
 	}else {
-		for (auto * object : drawables) {
+		for (auto & object : drawables) {
 			if (object->Selected){
 				object->Selected = false;
 				return;
@@ -35,7 +35,8 @@ void select(std::vector<drawable*> drawables, sf::RenderWindow & window) {
 }
 
 int main( int argc, char *argv[] ){
-	std::vector<drawable * > drawables = {};
+	bool error = false;
+	std::vector <std::unique_ptr<drawable>> drawables;
 	std::ifstream input("objects.txt");
 	try {
 		for(;;){
@@ -45,6 +46,7 @@ int main( int argc, char *argv[] ){
 		// do nothing
 	} catch ( std::exception & problem ){
 		std::cout << problem.what();
+		error = true;
 	}
 
 	sf::RenderWindow window{ sf::VideoMode{ 640, 480 }, "SFML window" };
@@ -54,7 +56,7 @@ int main( int argc, char *argv[] ){
 		select(drawables, window);
 
 		window.clear();
-		for(auto object : drawables){
+		for(auto & object : drawables){
 				object->draw(window);
 		}
 		window.display();
@@ -68,13 +70,14 @@ int main( int argc, char *argv[] ){
 			}
 		}
 	}
-	std::ofstream output("objects.txt");
-
-	for (auto * object : drawables) {
-		object->writePosition(output);
-		object->writeType(output);
-		object->writeObjectSpecificStuff(output);
-		output << "\n";
+	if (!error) {
+		std::ofstream output("objects.txt");
+		for (auto & object : drawables) {
+			object->writePosition(output);
+			object->writeType(output);
+			object->writeObjectSpecificStuff(output);
+			output << "\n";
+		}
 	}
 	
 	std::cout << "Terminating application\n";

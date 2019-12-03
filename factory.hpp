@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include "exception.hpp"
+#include <memory>
 
 
 std::ifstream & operator>>( std::ifstream & input, sf::Color & rhs ){
@@ -43,7 +44,7 @@ std::ifstream & operator>>( std::ifstream & input, sf::Vector2f & rhs ){
 }
 
 
-drawable * screen_object_read( std::ifstream & input ){
+std::unique_ptr<drawable>  screen_object_read( std::ifstream & input ){
    sf::Vector2f position;
    sf::Vector2f position2;
    sf::Color color;
@@ -54,17 +55,17 @@ drawable * screen_object_read( std::ifstream & input ){
 
    if( name == "CIRCLE" ){
 		input >> color >> size;
-		return new circle(position, size, color);
-   } else if( name == "RECTANGLE" ){
+		//return std::make_unique<circle>(position, size, color);
+   } /*else if( name == "RECTANGLE" ){
 		input >> color >> position2;
-		return new rectangle(position, position2, color);
+		return std::make_unique<rectangle>(position, position2, color);
    } else if( name == "PICTURE" ){
 		input >> filename;
-		return new picture(position, filename);
+		return std::make_unique<picture>(position, filename);
    } else if (name == "LINE") {
 	    input >> color >> position2;
-	    return new line(position, position2, color);
-   } else if( name == "" ){
+	    return std::make_unique<line>(position, position2, color);
+   } */ else if( name == "" ){
 		throw end_of_file();
    }
    throw unknown_shape( name );
